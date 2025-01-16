@@ -53,15 +53,3 @@ def check_wordpress(url):
     except Exception as e:
         print(f"Error checking WordPress for {url}: {str(e)}")
         return False
-
-if __name__ == "__main__":
-    import sys
-    import json
-    
-    # Read input from stdin
-    input_data = json.loads(sys.stdin.read())
-    url = input_data.get('url')
-    
-    # Return result as JSON
-    result = {'isWordPress': check_wordpress(url)}
-    print(json.dumps(result))
