@@ -34,6 +34,7 @@ function App() {
   });
   const [results, setResults] = useState<AnalysisResult[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   // Initialize Supabase auth state
   useEffect(() => {
@@ -141,6 +142,17 @@ function App() {
       
       setResults(analyzedResults);
       setProgress({ status: 'completed', progress: 100 });
+      
+      // Save the analysis
+      try {
+        await saveAnalysis(user.id, keyword, googleDomain, analyzedResults);
+        // Refresh saved analyses list
+        const analyses = await getAnalyses(user.id);
+        setSavedAnalyses(analyses);
+      } catch (err) {
+        console.error('Failed to save analysis:', err);
+        setMessage({ type: 'error', text: 'Analysis completed but failed to save. Please try again.' });
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to analyze websites';
       setError(errorMessage);
