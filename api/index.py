@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from api.check_wordpress import check_wordpress
+from check_wordpress import check_wordpress
 import os
 from functools import wraps
 import time
